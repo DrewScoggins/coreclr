@@ -363,9 +363,8 @@ echo "CORE_ROOT dir = $CORE_ROOT"
 DO_SETUP=TRUE
 
 if [ ${DO_SETUP} == "TRUE" ]; then
-cp  $testNativeBinDir/../../../../../packages/Microsoft.DotNet.xunit.performance.runner.cli/1.0.0-alpha-build0040/lib/netstandard1.3/Microsoft.DotNet.xunit.performance.runner.cli.dll .
-cp  $testNativeBinDir/../../../../../packages/Microsoft.DotNet.xunit.performance.analysis.cli/1.0.0-alpha-build0040/lib/netstandard1.3/Microsoft.DotNet.xunit.performance.analysis.cli.dll .
-cp  $testNativeBinDir/../../../../../packages/Microsoft.DotNet.xunit.performance.run.core/1.0.0-alpha-build0040/lib/dotnet/*.dll .
+   $testNativeBinDir/../../../../../Tools/dotnetcli/dotnet restore $testNativeBinDir/../../../../../tests/src/Common/PerfHarness/project.json
+   $testNativeBinDir/../../../../../Tools/dotnetcli/dotnet publish $testNativeBinDir/../../../../../tests/src/Common/PerfHarness/project.json -c Release -o .
 fi
 
 # Run coreclr performance tests
@@ -383,13 +382,11 @@ cp $testcase .
 cp $testcase-*.txt .
 
 chmod u+x ./corerun
-echo "./corerun Microsoft.DotNet.xunit.performance.runner.cli.dll $test -runner xunit.console.netcore.exe -runnerhost ./corerun -verbose -runid perf-$testname"
-./corerun Microsoft.DotNet.xunit.performance.runner.cli.dll $test -runner xunit.console.netcore.exe -runnerhost ./corerun -verbose -runid perf-$testname
-echo "./corerun Microsoft.DotNet.xunit.performance.analysis.cli.dll perf-$testname.xml -xml perf-$testname-summary.xml"
-./corerun Microsoft.DotNet.xunit.performance.analysis.cli.dll perf-$testname.xml -xml perf-$testname-summary.xml
+echo "./corerun PerfHarness.dll $test -perf:runid Perf"
+./corerun PerfHarness.dll $test -perf:runid Perf
 if [ "$uploadToBenchview" == "TRUE" ]
     then
-	python3.5 ../../../../../tests/scripts/Microsoft.BenchView.JSONFormat/tools/measurement.py xunit perf-$testname.xml --better desc --drop-first-value --append
+	python3.5 ../../../../../tests/scripts/Microsoft.BenchView.JSONFormat/tools/measurement.py xunit Perf-$testname.xml --better desc --drop-first-value --append
 fi
 done
 if [ "$uploadToBenchview" == "TRUE" ]
