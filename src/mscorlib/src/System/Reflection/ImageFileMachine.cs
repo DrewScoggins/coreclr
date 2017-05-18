@@ -4,7 +4,6 @@
 
 namespace System.Reflection
 {
-    [Serializable]
     public enum ImageFileMachine
     {
         I386 = 0x014c,
@@ -13,3 +12,4 @@ namespace System.Reflection
         ARM = 0x01c4,
     }
 }
+

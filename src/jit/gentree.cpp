@@ -8800,8 +8800,8 @@ void GenTree::CopyTo(class Compiler* comp, const GenTree& gt)
 {
     SetOperRaw(gt.OperGet());
 
-    gtType         = gt.gtType;
-    gtAssertionNum = gt.gtAssertionNum;
+    gtType          = gt.gtType;
+    gtAssertionInfo = gt.gtAssertionInfo;
 
     gtRegNum = gt.gtRegNum; // one union member.
     CopyCosts(&gt);
@@ -9322,9 +9322,15 @@ GenTreeUseEdgeIterator::GenTreeUseEdgeIterator(GenTree* node)
             return;
 
         case GT_FIELD:
-            m_edge = &m_node->AsField()->gtFldObj;
-            assert(*m_edge != nullptr);
-            m_advance = &GenTreeUseEdgeIterator::Terminate;
+            if (m_node->AsField()->gtFldObj == nullptr)
+            {
+                m_state = -1;
+            }
+            else
+            {
+                m_edge    = &m_node->AsField()->gtFldObj;
+                m_advance = &GenTreeUseEdgeIterator::Terminate;
+            }
             return;
 
         case GT_STMT:

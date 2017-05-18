@@ -100,8 +100,8 @@ corerun.exe PerfHarness.dll %WORKSPACE%\sandbox\%BENCHNAME%.%TEST_FILE_EXT% --pe
 if not [%BENCHVIEW_PATH%] == [] (
   py "%BENCHVIEW_PATH%\measurement.py" xunit "Perf-%BENCHNAME%.xml" --better desc --drop-first-value --append
   REM Save off the results to the root directory for recovery later in Jenkins
-  xcopy perf-%BENCHNAME%*.xml %CORECLR_REPO%\
-  xcopy perf-%BENCHNAME%*.etl %CORECLR_REPO%\
+  xcopy Perf-%BENCHNAME%*.xml %CORECLR_REPO%\
+  xcopy Perf-%BENCHNAME%*.etl %CORECLR_REPO%\
 ) else (
   type %XMLOUT% | findstr "test name"
   type %XMLOUT% | findstr Duration

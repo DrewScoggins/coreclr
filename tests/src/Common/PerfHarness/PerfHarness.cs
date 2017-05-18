@@ -8,8 +8,7 @@ public class PerfHarness
     public static void Main(string[] args)
     {
         string assemblyName = args[0];
-        
-	using (XunitPerformanceHarness harness = new XunitPerformanceHarness(args))
+        using (XunitPerformanceHarness harness = new XunitPerformanceHarness(args))
         {
             harness.RunBenchmarks(assemblyName);
         }

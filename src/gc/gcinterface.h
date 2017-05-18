@@ -581,6 +581,9 @@ public:
     // Sets whether or not a GC is in progress.
     virtual void SetGCInProgress(BOOL fInProgress) = 0;
 
+    // Gets whether or not the GC runtime structures are in a valid state for heap traversal.
+    virtual bool RuntimeStructuresValid() = 0;
+
     /*
     ============================================================================
     Add/RemoveMemoryPressure support routines. These are on the interface
@@ -693,8 +696,9 @@ public:
     ===========================================================================
     */
 
-    // Returns TRUE if GC actually happens, otherwise FALSE
-    virtual BOOL StressHeap(gc_alloc_context* acontext = 0) = 0;
+    // Returns TRUE if GC actually happens, otherwise FALSE. The passed alloc context
+    // must not be null.
+    virtual BOOL StressHeap(gc_alloc_context* acontext) = 0;
 
     /*
     ===========================================================================
